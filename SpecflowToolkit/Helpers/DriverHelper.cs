@@ -1,11 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using SpecflowToolkit.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpecflowToolkit.Helpers
 {
@@ -19,18 +14,12 @@ namespace SpecflowToolkit.Helpers
             if (TestConfiguration == null)
             {
                 TestConfiguration = new TestConfigurationManager();
-                ChromeOptions options = null;
+                var options = new ChromeOptions();
 
                 if (TestConfigurationManager.SpecflowToolkitConfiguration.Options.Any())
-                {
                     options.AddArguments(TestConfigurationManager.SpecflowToolkitConfiguration.Options.ToArray());
 
-                    //Driver = new ChromeDriver(Environment.CurrentDirectory, options);
-                }
-                //else
-                //{
-                Driver = new ChromeDriver(Environment.CurrentDirectory);
-                //}
+                Driver = new ChromeDriver(Environment.CurrentDirectory, options);
             }
         }
 

@@ -1,10 +1,10 @@
 ﻿using AventStack.ExtentReports;
 using AventStack.ExtentReports.Gherkin.Model;
 using AventStack.ExtentReports.Reporter;
+using Microsoft.Extensions.Logging;
 using SpecflowToolkit.Configuration;
 using SpecflowToolkit.ExtentionMethods;
 using SpecflowToolkit.Helpers;
-using System;
 using TechTalk.SpecFlow;
 
 namespace SpecflowToolkit
@@ -23,7 +23,7 @@ namespace SpecflowToolkit
         {
             DriverHelper.Initialize();
 
-            //if (TestConfigurationManager.SpecflowToolkitConfiguration.LogLevel != LogLevel.None)
+            if (TestConfigurationManager.SpecflowToolkitConfiguration.LogLevel != LogLevel.None)
             {
                 var reporter = new ExtentHtmlReporter(PathReport);
 
@@ -36,10 +36,8 @@ namespace SpecflowToolkit
         [AfterTestRun]
         public static void EndTest()
         {
-            //if (TestConfigurationManager.SpecflowToolkitConfiguration.LogLevel != LogLevel.None)
-            {
+            if (TestConfigurationManager.SpecflowToolkitConfiguration.LogLevel != LogLevel.None)
                 _extent.Flush();
-            }
 
             DriverHelper.EndDriver();
         }
@@ -47,37 +45,29 @@ namespace SpecflowToolkit
         [BeforeFeature(Order = 1)]
         public static void ConfigureFeature(FeatureContext featureContext)
         {
-            //if (TestConfigurationManager.SpecflowToolkitConfiguration.LogLevel != LogLevel.None)
-            {
+            if (TestConfigurationManager.SpecflowToolkitConfiguration.LogLevel != LogLevel.None)
                 _feature = _extent.CreateTest(featureContext.FeatureInfo.Title);
-            }
         }
 
         [BeforeScenario(Order = 1)]
         public static void CreateScenario(ScenarioContext scenarioContext)
         {
-            //if (TestConfigurationManager.SpecflowToolkitConfiguration.LogLevel != LogLevel.None)
-            {
+            if (TestConfigurationManager.SpecflowToolkitConfiguration.LogLevel != LogLevel.None)
                 _scenario = _feature.CreateNode<Scenario>(scenarioContext.ScenarioInfo.Title);
-            }
         }
 
         [BeforeStep(Order = 1)]
         public static void ConfigureStep(ScenarioContext scenarioContext)
         {
-            //if (TestConfigurationManager.SpecflowToolkitConfiguration.LogLevel == LogLevel.Trace)
-            {
+            if (TestConfigurationManager.SpecflowToolkitConfiguration.LogLevel == LogLevel.Trace)
                 scenarioContext.StepContext.Add(Guid.NewGuid().ToString(), DriverHelper.PrintScreen());
-            }
         }
 
         [AfterStep]
         public static void EndStep(ScenarioContext scenarioContext)
         {
-            //if (TestConfigurationManager.SpecflowToolkitConfiguration.LogLevel != LogLevel.None)
-            {
+            if (TestConfigurationManager.SpecflowToolkitConfiguration.LogLevel != LogLevel.None)
                 _scenario.CreateExtentTest(scenarioContext, scenarioContext.StepContext.StepInfo.StepDefinitionType);
-            }
         }
     }
 }
